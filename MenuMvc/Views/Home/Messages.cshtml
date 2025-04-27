@@ -1,0 +1,100 @@
+﻿@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    Layout = "_Layout";
+    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserId");
+}
+
+<!-- Include Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Include Font Awesome for Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+<style>
+    body {
+        background: #f8f9fa;
+        font-family: 'Arial', sans-serif;
+        margin: 20px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-custom {
+        background: #ff7e5f;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: background 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            background: #feb47b;
+        }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Manage Messages</h4>
+                </div>
+                <div class="card-body">
+                    <table id="MessagesTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Mobile Number</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="@Url.Action("Dashboard", "Home")" class="btn btn-secondary">
+        <i class="fa fa-arrow-left me-2"></i> Back to Home
+    </a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function () {
+        loadMessages();
+    });
+
+    function loadMessages() {
+        $('#MessagesTable').DataTable({
+            destroy: true,
+            ajax: {
+                url: '@Url.Action("GetMessages", "Home")',
+                dataSrc: '',
+                error: function () {
+                    Swal.fire('Error', 'Failed to load Messages.', 'error');
+                }
+            },
+            columns: [
+                { data: 'name' },
+                { data: 'mobileNumber' },
+                { data: 'subject' },
+                { data: 'message' }
+            ]
+        });
+    }
+</script>

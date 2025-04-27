@@ -1,0 +1,59 @@
+﻿@model MenuMvc.Models.UserRegistrationModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>User Registration</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<form asp-action="Register" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="NameResEn"></label>
+        <input asp-for="NameResEn" class="form-control" />
+        <span asp-validation-for="NameResEn" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NameResAr"></label>
+        <input asp-for="NameResAr" class="form-control" />
+        <span asp-validation-for="NameResAr" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Logo"></label>
+        <input type="file" name="LogoFile" class="form-control" />
+        <span asp-validation-for="Logo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Username"></label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="QRCode"></label>
+        <input asp-for="QRCode" class="form-control" />
+        <span asp-validation-for="QRCode" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Select Categories:</label><br />
+        @foreach (var category in ViewBag.Categories as List<MenuMvc.Models.Category>)
+        {
+            <div class="row" >
+                <div class="col-3">
+                    <input type="checkbox" name="CategoryIds" value="@category.Id" /> @category.NameEn
+
+
+                </div>
+                </div>
+        
+        }
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
